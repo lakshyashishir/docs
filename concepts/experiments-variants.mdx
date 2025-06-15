@@ -1,0 +1,43 @@
+---
+title: Experiments & Variants
+description: Understand the core concepts of Experiments and Variants in AgentTest.
+---
+
+# Experiments and Variants
+
+AgentTest revolves around the concepts of **Experiments** and their **Variants**. Understanding these is key to effectively using the platform.
+
+## Experiment
+
+An **Experiment** is the primary container for your A/B tests. It defines what you are testing and includes all the different versions you want to compare.
+
+Key characteristics of an Experiment:
+
+*   **`slug`**: A unique, URL-friendly identifier for the experiment (e.g., `onboarding-prompt-test`). This slug is used in API calls.
+*   **`name`**: A human-readable name for the experiment (e.g., "Onboarding Prompt Test V1"). This is for display and organizational purposes.
+*   **`status`**: Indicates the current state of the experiment. Common statuses include:
+    *   `DRAFT`: The experiment is being set up and is not yet active.
+    *   `ACTIVE`: The experiment is currently running, and variants are being assigned to users.
+    *   `PAUSED`: The experiment is temporarily stopped; no new assignments will be made, but existing assignments might still be logged.
+    *   `COMPLETED`: The experiment has concluded.
+*   **Variants**: Each experiment holds multiple **Variants**. These are the different versions you are comparing against each other.
+
+You typically create an experiment when you want to test a hypothesis, such as "Does prompt A perform better than prompt B for user summarization tasks?"
+
+## Variant
+
+A **Variant** represents a specific version of your AI agent, prompt, configuration, or workflow that you are testing within an Experiment.
+
+Key characteristics of a Variant:
+
+*   **`key`**: A unique identifier for the variant within its parent experiment (e.g., "A", "B", "control", "treatment-alpha"). This key is returned by the assignment API and used in logging.
+*   **`payload`**: A JSON object that contains the actual content or configuration for this variant. This is the data your application will use. Examples include:
+    *   A specific prompt template: `{"prompt": "You are an expert travel assistant..."}`
+    *   Model configuration: `{"model": "gpt-4", "temperature": 0.8}`
+    *   A feature flag: `{"enable_new_summary_feature": true}`
+    *   Or even a reference to an entirely different agent version.
+*   **`trafficPercent`**: An integer (0-100) representing the percentage of users/requests that should be allocated to this variant. The sum of `trafficPercent` for all active variants in an experiment should ideally (but not strictly enforced by API at assignment time) be 100. The assignment logic uses this to distribute users. For example, in a two-variant experiment, you might have:
+    *   Variant "A": `trafficPercent: 50`
+    *   Variant "B": `trafficPercent: 50`
+
+The `payload` of a variant is what your application receives when a user is assigned to that variant. Your application logic then uses this payload to alter its behavior, for example, by using the received prompt with an LLM or adjusting model parameters.

@@ -1,0 +1,60 @@
+---
+title: Installation & Setup
+description: Set up your local environment to use the AgentTest backend.
+---
+
+# Installation & Setup
+
+This guide will walk you through setting up the AgentTest backend for local development.
+
+## Local Development Setup
+
+Follow these steps to get your development environment ready:
+
+1.  **Clone the repository:**
+    ```bash
+    git clone https://github.com/agenttest/agenttest-backend
+    ```
+
+2.  **Navigate to the project directory:**
+    ```bash
+    cd agenttest-backend
+    ```
+
+3.  **Set up your environment variables:**
+    Copy the example environment file:
+    ```bash
+    cp .env.example .env
+    ```
+    Then, open the `.env` file and add your Supabase Database URL and a secure API key.
+    ```env
+    DATABASE_URL="your_supabase_connection_string"
+    API_KEY="your_super_secret_api_key"
+    ```
+    <Note>
+      Replace `"your_supabase_connection_string"` with your actual Supabase Postgres connection string and
+      `"your_super_secret_api_key"` with a strong, unique API key.
+    </Note>
+
+4.  **Install dependencies:**
+    ```bash
+    npm install
+    ```
+
+5.  **Run database migrations:**
+    This command will apply the database schema to your Supabase instance.
+    ```bash
+    npx drizzle-kit push
+    ```
+    <Note>
+    The `drizzle-kit push` command is for development environments. For production, you should use `drizzle-kit generate` and manage SQL migration files. Refer to Drizzle ORM documentation for more details.
+    </Note>
+
+
+6.  **Start the development server:**
+    ```bash
+    npm run dev
+    ```
+    The server should now be running, typically on `http://localhost:3000`.
+
+You are now ready to make requests to your local AgentTest backend instance.

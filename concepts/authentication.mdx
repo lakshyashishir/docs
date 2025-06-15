@@ -1,0 +1,56 @@
+---
+title: Authentication
+description: Learn how to authenticate your API requests to the AgentTest backend.
+---
+
+# Authentication
+
+The AgentTest backend uses API keys to authenticate requests. All API endpoints are protected and require a valid API key to be included in your requests.
+
+## Using the API Key
+
+To authenticate your API calls, you must include an `x-api-key` header with your secret API key.
+
+**Example using cURL:**
+
+```bash
+curl -X POST \
+  -H "Content-Type: application/json" \
+  -H "x-api-key: YOUR_SUPER_SECRET_API_KEY" \
+  -d '{ "userId": "user-test-123" }' \
+  https://your-agenttest-backend.example.com/experiment/my-prompt-test/assign
+```
+
+Replace `YOUR_SUPER_SECRET_API_KEY` with the actual API key you've configured for your backend instance, and `https://your-agenttest-backend.example.com` with the URL of your deployed AgentTest backend.
+
+## Setting up the API Key
+
+The API key is defined in the `.env` file in the root of your AgentTest backend project. You need to set the `API_KEY` variable:
+
+```env
+# .env file
+DATABASE_URL="your_supabase_connection_string"
+API_KEY="your_super_secret_api_key_here"
+# Other variables like PORT can also be here
+# PORT=3001
+```
+
+*   Choose a strong, unique string for your API key.
+*   This `API_KEY` value is what the backend server will expect in the `x-api-key` header.
+
+<Warning>
+  **Keep your API key secure!**
+  Your API key grants access to your AgentTest backend, including assigning variants and logging results.
+  Do not expose it in client-side browser code or commit it to your version control system if the `.env` file is not gitignored (by default, `.env` files should be in `.gitignore`).
+  Treat it like a password.
+</Warning>
+
+## Unauthenticated Requests
+
+If an API request is made without an `x-api-key` header, or if the provided key is invalid, the server will respond with a `401 Unauthorized` HTTP status code.
+
+```json
+{
+  "error": "Unauthorized"
+}
+```

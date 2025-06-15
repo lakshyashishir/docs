@@ -1,0 +1,74 @@
+---
+title: Assign Variant
+description: Assigns a variant to the user based on traffic distribution.
+---
+
+# Assign Variant
+
+Assigns a variant to a user for a specific experiment based on the configured traffic distribution. This endpoint helps in dynamically routing users to different agent variants.
+
+<Note>
+  All API endpoints, including this one, require an `x-api-key` header for authentication.
+  Refer to the [Authentication](/concepts/authentication) section for more details.
+</Note>
+
+## Endpoint
+
+`POST /experiment/:slug/assign`
+
+### Path Parameters
+
+| Name   | Type   | Description                                 |
+| :----- | :----- | :------------------------------------------ |
+| `slug` | string | **Required**. The unique slug of the experiment. |
+
+### Request Body
+
+The request body must be a JSON object containing the user's identifier and any relevant context for the assignment.
+
+```json
+{
+  "userId": "user-123",
+  "context": {
+    "session_id": "session_abc_123",
+    "user_preferences": {
+      "theme": "dark"
+    }
+  }
+}
+```
+
+**Fields:**
+
+*   `userId` (string, required): A unique identifier for the user for whom the variant is being assigned. This helps in ensuring consistent variant assignment for the same user if needed.
+*   `context` (object, optional): An optional JSON object that can contain any contextual information relevant to this assignment. This data is logged alongside the assignment and can be useful for later analysis (e.g., session information, user properties).
+
+### Response Body
+
+On successful assignment, the server responds with a JSON object containing the assigned variant key and its payload.
+
+**Success (200 OK):**
+
+```json
+{
+  "variant": "A",
+  "payload": {
+    "prompt_template": "You are a helpful assistant. This is variant A.",
+    "model_parameters": {
+      "temperature": 0.7
+    }
+  }
+}
+```
+
+**Fields:**
+
+*   `variant` (string): The key of the variant that was assigned (e.g., "A", "B").
+*   `payload` (object): The JSON payload associated with the assigned variant. This could be a prompt, a configuration object, or any other data defined for the variant.
+
+**Error Responses:**
+
+*   `400 Bad Request`: If the request body is malformed or `userId` is missing.
+*   `401 Unauthorized`: If the `x-api-key` is missing or invalid.
+*   `404 Not Found`: If no experiment with the given `slug` is found or if the experiment is not active.
+*   `500 Internal Server Error`: If there was an unexpected error during the assignment process.

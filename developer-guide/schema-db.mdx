@@ -1,3 +1,39 @@
-# Schema & DB
+---
+title: Schema & Database
+description: Details about the database schema, ORM, and related technologies used in AgentTest.
+---
 
-Details about schema and database.
+# Schema & Database
+
+AgentTest relies on a PostgreSQL database for persistent storage of all experiment configurations, variant details, and logged results. When self-hosting, we recommend using Supabase, which provides a managed Postgres database along with other backend services.
+
+## ORM: Drizzle
+
+We use [Drizzle ORM](https://orm.drizzle.team/) to interact with the database. Drizzle ORM is a TypeScript ORM that offers a schema definition syntax and a type-safe SQL-like query builder.
+
+*   **Schema Definition**: The database table structures, relationships, and types are defined in TypeScript within the `schema/schema.ts` file. This is the source of truth for your database structure.
+*   **Type-Safe Queries**: By using Drizzle, our backend code benefits from type safety when querying the database, reducing runtime errors and improving developer experience.
+
+## Key Schema Aspects
+
+*   **UUIDs for Primary Keys**: Most tables in the AgentTest schema use UUIDs (Universally Unique Identifiers) as primary keys. This helps ensure global uniqueness of records, which is beneficial in distributed environments or when potentially merging data from different instances.
+*   **JSONB for Flexible Data**: Fields that need to store flexible, structured data—such as variant `payload`s, and the `input`, `output`, and `context` fields in log entries—utilize PostgreSQL's `JSONB` data type. This allows for storing complex JSON objects efficiently while still allowing for querying within the JSON structure if needed.
+
+## Migrations with Drizzle Kit
+
+Database schema changes and migrations are managed using `drizzle-kit`, the command-line tool provided with Drizzle ORM.
+
+*   **Configuration**: The `drizzle.config.ts` file in the project root contains the configuration for `drizzle-kit`, specifying where your schema file is located and where migration files should be generated.
+*   **Common Commands**:
+    *   `npx drizzle-kit generate`: Analyzes your `schema/schema.ts` and generates SQL migration files that describe the changes needed to update the database schema. This is the preferred method for production environments as it gives you reviewable SQL migration files.
+    *   `npx drizzle-kit push`: A command more suited for rapid development and prototyping. It directly pushes your schema changes to the database without generating explicit migration files. (Used in the default setup instructions for simplicity).
+
+## Core Tables
+
+While the exact schema can evolve, the core tables generally include:
+
+*   **`experiments`**: Stores the definition for each A/B test, including its `slug`, `name`, `status`, and other metadata.
+*   **`variants`**: Defines the different versions being tested within an experiment. Each variant has a `key`, the actual `payload` (JSONB), its `trafficPercent`, and a foreign key linking it to an `experiment`.
+*   **`results`** (or **`logs`**): Contains the records of each time a variant was assigned and executed. This table stores the `variantKey` used, `input` (JSONB), `output` (JSONB), `metrics` (JSONB), and `context` (JSONB), along with a timestamp and a foreign key to the relevant `experiment`.
+
+Understanding the schema is crucial if you plan to extend the backend, write custom queries, or integrate AgentTest data with other systems.

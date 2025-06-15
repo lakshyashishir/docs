@@ -8,44 +8,51 @@
     "dark": "#15803D"
   },
   "favicon": "/favicon.svg",
-  "navigation": [
-    {
-      "group": "Getting Started",
-      "pages": [
-        "index",
-        "getting-started/installation-setup"
-      ]
-    },
-    {
-      "group": "API Reference",
-      "pages": [
-        "api-reference/assign-endpoint",
-        "api-reference/log-endpoint"
-      ]
-    },
-    {
-      "group": "Concepts",
-      "pages": [
-        "concepts/experiments-variants",
-        "concepts/assignment-logging",
-        "concepts/authentication"
-      ]
-    },
-    {
-      "group": "Developer Guide",
-      "pages": [
-        "developer-guide/local-development",
-        "developer-guide/schema-db",
-        "developer-guide/sdk-integration"
-      ]
-    },
-    {
-      "group": "Roadmap",
-      "pages": [
-        "roadmap"
-      ]
-    }
-  ],
+  "navigation": {
+    "tabs": [
+      {
+        "tab": "Documentation",
+        "groups": [
+          {
+            "group": "Getting Started",
+            "pages": [
+              "index",
+              "getting-started/installation-setup"
+            ]
+          },
+          {
+            "group": "API Reference",
+            "pages": [
+              "api-reference/assign-endpoint",
+              "api-reference/log-endpoint"
+            ]
+          },
+          {
+            "group": "Concepts",
+            "pages": [
+              "concepts/experiments-variants",
+              "concepts/assignment-logging",
+              "concepts/authentication"
+            ]
+          },
+          {
+            "group": "Developer Guide",
+            "pages": [
+              "developer-guide/local-development",
+              "developer-guide/schema-db",
+              "developer-guide/sdk-integration"
+            ]
+          },
+          {
+            "group": "Roadmap",
+            "pages": [
+              "roadmap"
+            ]
+          }
+        ]
+      }
+    ]
+  },
   "logo": {
     "light": "/logo/light.svg",
     "dark": "/logo/dark.svg"

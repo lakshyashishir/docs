@@ -1,11 +1,8 @@
 ---
-title: Authentication
-description: Learn how to authenticate your API requests to the AgentTest backend.
+title: "Authentication"
+description: "The AgentTest backend uses API keys to authenticate requests. All API endpoints are protected and require a valid API key to be included in your requests."
 ---
 
-# Authentication
-
-The AgentTest backend uses API keys to authenticate requests. All API endpoints are protected and require a valid API key to be included in your requests.
 
 ## Using the API Key
 
@@ -35,11 +32,11 @@ API_KEY="your_super_secret_api_key_here"
 # PORT=3001
 ```
 
-*   Choose a strong, unique string for your API key.
-*   This `API_KEY` value is what the backend server will expect in the `x-api-key` header.
+- Choose a strong, unique string for your API key.
+- This `API_KEY` value is what the backend server will expect in the `x-api-key` header.
 
 <Warning>
-  **Keep your API key secure!**
+  **Keep your API key secure\!**
   Your API key grants access to your AgentTest backend, including assigning variants and logging results.
   Do not expose it in client-side browser code or commit it to your version control system if the `.env` file is not gitignored (by default, `.env` files should be in `.gitignore`).
   Treat it like a password.

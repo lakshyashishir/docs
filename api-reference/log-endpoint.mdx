@@ -1,11 +1,8 @@
 ---
-title: Log Result
-description: Logs the result of a variant run for an experiment.
+title: "Log Result"
+description: "Logs the execution details of a specific variant run for an experiment. This data is crucial for analyzing experiment performance."
 ---
 
-# Log Result
-
-Logs the execution details of a specific variant run for an experiment. This data is crucial for analyzing experiment performance.
 
 <Note>
   All API endpoints, including this one, require an `x-api-key` header for authentication.
@@ -18,8 +15,8 @@ Logs the execution details of a specific variant run for an experiment. This dat
 
 ### Path Parameters
 
-| Name   | Type   | Description                                 |
-| :----- | :----- | :------------------------------------------ |
+| Name   | Type   | Description                                      |
+| :----- | :----- | :----------------------------------------------- |
 | `slug` | string | **Required**. The unique slug of the experiment. |
 
 ### Request Body
@@ -49,11 +46,11 @@ The request body must be a JSON object containing details about the variant exec
 
 **Fields:**
 
-*   `variantKey` (string, required): The key of the variant that was executed (e.g., "A", "B"). This should match a variant defined in the experiment.
-*   `input` (object, optional): The input provided to the AI agent or prompt workflow for this execution.
-*   `output` (object, optional): The output received from the AI agent or prompt workflow.
-*   `metrics` (object, optional): Any quantitative metrics recorded for this execution (e.g., latency, token count, cost).
-*   `context` (object, optional): An optional JSON object that can contain any contextual information relevant to this log entry (e.g., session information, environment).
+- `variantKey` (string, required): The key of the variant that was executed (e.g., "A", "B"). This should match a variant defined in the experiment.
+- `input` (object, optional): The input provided to the AI agent or prompt workflow for this execution.
+- `output` (object, optional): The output received from the AI agent or prompt workflow.
+- `metrics` (object, optional): Any quantitative metrics recorded for this execution (e.g., latency, token count, cost).
+- `context` (object, optional): An optional JSON object that can contain any contextual information relevant to this log entry (e.g., session information, environment).
 
 ### Response Body
 
@@ -70,12 +67,12 @@ On successful logging, the server responds with a simple success message.
 
 **Fields:**
 
-*   `success` (boolean): Indicates whether the log entry was successfully recorded.
-*   `logId` (string): A unique identifier for the created log entry.
+- `success` (boolean): Indicates whether the log entry was successfully recorded.
+- `logId` (string): A unique identifier for the created log entry.
 
 **Error Responses:**
 
-*   `400 Bad Request`: If the request body is malformed or `variantKey` is missing.
-*   `401 Unauthorized`: If the `x-api-key` is missing or invalid.
-*   `404 Not Found`: If no experiment with the given `slug` is found.
-*   `500 Internal Server Error`: If there was an unexpected error during the logging process.
+- `400 Bad Request`: If the request body is malformed or `variantKey` is missing.
+- `401 Unauthorized`: If the `x-api-key` is missing or invalid.
+- `404 Not Found`: If no experiment with the given `slug` is found.
+- `500 Internal Server Error`: If there was an unexpected error during the logging process.

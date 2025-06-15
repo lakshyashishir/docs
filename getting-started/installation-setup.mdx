@@ -1,60 +1,124 @@
 ---
 title: Installation & Setup
-description: Set up your local environment to use the AgentTest backend.
+description: Start using AgentTest with our JavaScript SDK or REST API in minutes.
 ---
 
 # Installation & Setup
 
-This guide will walk you through setting up the AgentTest backend for local development.
+AgentTest makes it easy to run A/B tests on your AI agents or prompt variations. This guide shows you how to quickly get started using either our JavaScript SDK or the REST API.
 
-## Local Development Setup
+## 🧩 Option 1: JavaScript SDK (Recommended)
 
-Follow these steps to get your development environment ready:
+Use the AgentTest SDK to seamlessly integrate A/B testing in your Node.js or browser-based agents.
 
-1.  **Clone the repository:**
-    ```bash
-    git clone https://github.com/agenttest/agenttest-backend
-    ```
+### 1. Install the SDK
 
-2.  **Navigate to the project directory:**
-    ```bash
-    cd agenttest-backend
-    ```
+```bash
+npm install @agenttest/sdk
+```
 
-3.  **Set up your environment variables:**
-    Copy the example environment file:
-    ```bash
-    cp .env.example .env
-    ```
-    Then, open the `.env` file and add your Supabase Database URL and a secure API key.
-    ```env
-    DATABASE_URL="your_supabase_connection_string"
-    API_KEY="your_super_secret_api_key"
-    ```
-    <Note>
-      Replace `"your_supabase_connection_string"` with your actual Supabase Postgres connection string and
-      `"your_super_secret_api_key"` with a strong, unique API key.
-    </Note>
+### 2. Initialize the client
 
-4.  **Install dependencies:**
-    ```bash
-    npm install
-    ```
+```javascript
+import { AgentTestClient } from '@agenttest/sdk'
 
-5.  **Run database migrations:**
-    This command will apply the database schema to your Supabase instance.
-    ```bash
-    npx drizzle-kit push
-    ```
-    <Note>
-    The `drizzle-kit push` command is for development environments. For production, you should use `drizzle-kit generate` and manage SQL migration files. Refer to Drizzle ORM documentation for more details.
-    </Note>
+const client = new AgentTestClient({
+  apiKey: 'your-api-key',
+  host: 'https://api.agenttest.dev' // Your AgentTest endpoint
+})
+```
 
+### 3. Assign a variant
 
-6.  **Start the development server:**
-    ```bash
-    npm run dev
-    ```
-    The server should now be running, typically on `http://localhost:3000`.
+```javascript
+const { variant, payload } = await client.assign('experiment-slug', {
+  userId: 'user-123',
+  context: { sessionId: 'abc' }
+})
 
-You are now ready to make requests to your local AgentTest backend instance.
+// Use the returned payload to run your agent
+```
+
+### 4. Log the result
+
+```javascript
+await client.log('experiment-slug', {
+  variantKey: variant,
+  input: { prompt: 'Hello' },
+  output: { response: 'Hi there!' },
+  metrics: { latency: 120 },
+  context: { sessionId: 'abc' }
+})
+```
+
+## 🌐 Option 2: REST API
+
+Prefer using raw HTTP requests? Use our simple, stateless REST API.
+
+### 1. Assign a variant
+
+```
+POST https://api.agenttest.dev/experiment/:slug/assign
+```
+
+Headers:
+
+```
+x-api-key: your-api-key
+Content-Type: application/json
+```
+
+Request Body:
+
+```json
+{
+  "userId": "user-123",
+  "context": { "sessionId": "abc" }
+}
+```
+
+Response:
+
+```json
+{
+  "variant": "A",
+  "payload": { ... }
+}
+```
+
+### 2. Log a result
+
+```
+POST https://api.agenttest.dev/experiment/:slug/log
+```
+
+Headers:
+
+```
+x-api-key: your-api-key
+Content-Type: application/json
+```
+
+Request Body:
+
+```json
+{
+  "variantKey": "A",
+  "input": { "prompt": "Hello" },
+  "output": { "response": "Hi there!" },
+  "metrics": { "latency": 120 },
+  "context": { "sessionId": "abc" }
+}
+```
+
+## ✅ That's It!
+
+You're now ready to start testing your agents with AgentTest.
+
+For more advanced use cases, explore:
+
+- Creating and managing experiments
+- Tracking custom metrics
+- Using with LangGraph, LangChain, or other frameworks
+
+Need help? Reach out via GitHub or open an issue.

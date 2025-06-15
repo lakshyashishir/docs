@@ -1,3 +1,48 @@
+---
+title: SDK Integration
+description: Information on integrating the AgentTest backend with your applications, primarily via SDKs.
+---
+
 # SDK Integration
 
-Details about SDK integration.
+While the AgentTest backend exposes a clear and simple HTTP API for [assigning variants](/api-reference/assign-endpoint) and [logging results](/api-reference/log-endpoint), the most convenient way to integrate AgentTest into your AI agent applications will typically be through dedicated Software Development Kits (SDKs).
+
+## Why Use an SDK?
+
+SDKs aim to simplify the integration process by providing:
+
+*   **Abstraction**: Wrappers around the direct HTTP API calls, making it easier to call from your application code.
+*   **User Identification**: Helpers for managing `userId` and ensuring consistent variant assignment for users across sessions if needed.
+*   **Context Management**: Utilities for easily capturing and sending relevant `context` with assignment and log calls.
+*   **Simplified Logging**: Easier methods to log inputs, outputs, and custom metrics without needing to manually construct the JSON request bodies.
+*   **Potential for Local Caching**: Some SDKs might offer client-side caching of variant assignments to reduce latency or network requests for repeated assignments.
+
+## Current Status & Direct API Usage
+
+The initial open-source release of AgentTest focuses on providing this robust and flexible backend server. Official, full-featured SDKs for various languages and frameworks are a key part of our future roadmap.
+
+In the meantime, you can integrate AgentTest by making direct calls to the HTTP API endpoints:
+
+*   [`POST /experiment/:slug/assign`](/api-reference/assign-endpoint)
+*   [`POST /experiment/:slug/log`](/api-reference/log-endpoint)
+
+Refer to the API Reference sections for detailed information on request and response formats.
+
+## Planned SDKs
+
+We plan to develop and release SDKs for popular languages and AI frameworks, including:
+
+*   **Python SDK**: For general Python applications and popular AI/ML libraries.
+*   **JavaScript/TypeScript SDK**: For Node.js backends and potentially front-end applications (though careful consideration of API key security is needed for client-side usage).
+*   **LangChain Integration**: An SDK or module specifically designed for easy integration with [LangChain](https://www.langchain.com/) projects, allowing you to A/B test chains, prompts within chains, or agent components.
+*   **LangGraph Integration**: Similar to LangChain, specific support for [LangGraph](https://langchain-ai.github.io/langgraph/) to experiment with different graph configurations or agent states.
+
+## Community & Contributions
+
+The development of SDKs is an area where community contributions can be highly impactful. If you are interested in:
+
+*   Contributing to the development of an official SDK.
+*   Building your own SDK for a language or framework not yet covered.
+*   Sharing feedback on what features you'd like to see in an SDK.
+
+Please join our community discussions or check out the [AgentTest GitHub repository](https://github.com/agenttest/agenttest-backend) (link to be updated with actual SDK repo or main org repo when available).
